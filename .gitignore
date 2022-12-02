@@ -1,0 +1,12 @@
+.*.swp
+.*.swo
+core-image-*.iso
+debian-*.img
+debian-*-netinst.iso
+Fedora-*.iso
+fedora-*.img
+qemu_efi.img
+Rocky-*.img
+Rocky-*.iso
+tpm2
+varstore.img
