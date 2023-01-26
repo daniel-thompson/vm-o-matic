@@ -16,55 +16,7 @@
 #
 
 HDD = debian-11-bullseye-arm64.img
-ISO = https://cdimage.debian.org/debian-cd/current/arm64/iso-cd/debian-11.2.0-arm64-netinst.iso
+ISO = https://cdimage.debian.org/debian-cd/current/arm64/iso-cd/debian-11.6.0-arm64-netinst.iso
 SSH = 2222
 
-CPUS = 4
-RAMSIZE_MB = 8192
-
-# This assumes a Debian-derived host OS with qemu-efi-aarch64 installed.
-# It will not work out-of-the-box on other systems. If your distro
-# doesn't have this package, or equivalent, then it is possible to
-# extract the file from the raw .deb package.
-# See: https://packages.debian.org/testing/qemu-efi-arm .
-FIRMWARE = file:///usr/share/AAVMF/AAVMF_CODE.fd
-
-QEMU = qemu-system-aarch64
-QEMU_FLAGS = $(MACHINE_FLAGS) $(BIOS_FLAGS) $(HDD_FLAGS) $(NETWORK_FLAGS) $(EXTRA_QEMU_FLAGS)
-MACHINE_FLAGS = -cpu cortex-a57 -M virt -smp $(CPUS) -m $(RAMSIZE_MB) -nographic
-BIOS_FLAGS = -drive if=pflash,file=qemu_efi.img \
-	     -drive if=pflash,file=varstore.img
-HDD_FLAGS = -drive if=virtio,file=$(HDD)
-NETWORK_FLAGS = -nic user,model=virtio,hostfwd=tcp::$(SSH)-:22
-
-# Try to use KVM acceleration if we are running on arm64
-ifeq ($(shell uname -m),aarch64)
-MACHINE_FLAGS = -cpu host -M virt -smp $(CPUS) -m $(RAMSIZE_MB) -enable-kvm -nographic
-endif
-
-boot install: $(HDD) qemu_efi.img varstore.img
-	$(QEMU) $(QEMU_FLAGS)
-
-install: EXTRA_QEMU_FLAGS = -drive if=virtio,format=raw,file=$(notdir $(ISO))
-install : $(notdir $(ISO))
-
-# We avoid cleaning qemu_efi.img since, if we are not running on something
-# derived from Debian, then we'd like to keep a copy of the firmware around.
-clean :
-	$(RM) $(HDD) $(notdir $(ISO)) $(notdir $(FIRMWARE)) varstore.img
-
-$(HDD):
-	qemu-img create -f qcow2 $(HDD) 128G
-
-$(notdir $(ISO)):
-	curl --location --output $@ $(ISO)
-
-qemu_efi.img : $(notdir $(FIRMWARE))
-	qemu-img convert -c -f raw -O qcow2 $^ $@
-
-$(notdir $(FIRMWARE)):
-	curl --location --output $@ $(FIRMWARE)
-
-varstore.img :
-	qemu-img create -f qcow2 varstore.img 64M
-
+include ../mk/arm64.mk

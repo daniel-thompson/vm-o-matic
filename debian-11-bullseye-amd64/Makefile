@@ -20,34 +20,7 @@
 #
 
 HDD = debian-11-bullseye-amd64.img
-ISO = https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-11.2.0-amd64-netinst.iso
+ISO = https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-11.6.0-amd64-netinst.iso
 SSH = 2222
 
-CPUS = 8
-RAMSIZE_MB = 12288
-
-# This works on at least Debian and Fedora (both requiring a package called
-# ovmf).
-FIRMWARE = /usr/share/OVMF/OVMF_CODE.fd
-
-QEMU = qemu-system-x86_64 
-QEMU_FLAGS = $(MACHINE_FLAGS) $(HDD_FLAGS) $(NETWORK_FLAGS) $(EXTRA_QEMU_FLAGS)
-MACHINE_FLAGS = -enable-kvm -smp $(CPUS) -m $(RAMSIZE_MB) -bios $(FIRMWARE)
-HDD_FLAGS = -drive if=virtio,file=$(HDD)
-NETWORK_FLAGS = -nic user,model=virtio,hostfwd=tcp::$(SSH)-:22
-
-boot headless install: $(HDD)
-	$(QEMU) $(QEMU_FLAGS)
-
-headless: EXTRA_QEMU_FLAGS = -nographic
-install: EXTRA_QEMU_FLAGS = -cdrom $(notdir $(ISO))
-install : $(notdir $(ISO))
-
-clean :
-	$(RM) $(HDD) $(notdir $(ISO))
-
-$(HDD):
-	qemu-img create -f qcow2 $(HDD) 128G
-
-$(notdir $(ISO)):
-	curl --location --output $@ $(ISO)
+include ../mk/amd64.mk
