@@ -27,8 +27,13 @@ install : $(notdir $(ISO))
 clean :
 	$(RM) -r $(HDD) $(notdir $(ISO)) tpm2/ $(ARCH_CLEAN_FILES)
 
+# Can be hooked from Makefiles that have custom downloads
+pristine : clean
+
+ifndef DISABLE_HDD_RULE
 $(HDD):
 	qemu-img create -f qcow2 $(HDD) 128G
+endif
 
 $(notdir $(ISO)):
 	curl --fail --location --output $@ $(ISO)
