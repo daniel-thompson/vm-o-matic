@@ -31,9 +31,12 @@ HDD_FLAGS = -drive if=virtio,file=$(HDD)
 NETWORK_FLAGS = -nic user,model=virtio,hostfwd=tcp::$(SSH)-:22
 HEADLESS_FLAGS =
 
-# Try to use KVM acceleration if we are running on arm64
+# Try to use KVM acceleration if we are running on arm64 (and it's not a
+# Windows-on-Snapdragon laptop :-( )
 ifeq ($(shell uname -m),aarch64)
+ifeq ($(wildcard /dev/kvm),/dev/kvm)
 MACHINE_FLAGS = -cpu host -M virt -smp $(CPUS) -m $(RAMSIZE_MB) -enable-kvm -nographic
+endif
 endif
 
 # arm64 requires additional firmware files to be created
