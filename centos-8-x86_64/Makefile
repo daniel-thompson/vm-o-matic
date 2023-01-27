@@ -21,6 +21,5 @@
 
 HDD = CentOS-8-x86_64.img
 ISO = http://mirror.ox.ac.uk/sites/mirror.centos.org/8.3.2011/isos/x86_64/CentOS-8.3.2011-x86_64-dvd1.iso
-SSH = 2222
 
 include ../mk/amd64.mk

@@ -21,6 +21,5 @@
 
 HDD = debian-11-bullseye-amd64.img
 ISO = https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-11.6.0-amd64-netinst.iso
-SSH = 2222
 
 include ../mk/amd64.mk

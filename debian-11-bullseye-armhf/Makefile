@@ -17,6 +17,5 @@
 
 HDD = debian-11-bullseye-armhf.img
 ISO = https://cdimage.debian.org/debian-cd/current/armhf/iso-cd/debian-11.6.0-armhf-netinst.iso
-SSH = 2222
 
 include ../mk/armhf.mk

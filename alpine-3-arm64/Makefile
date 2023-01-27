@@ -17,6 +17,5 @@
 
 HDD = alpine-3-arm64.img
 ISO = https://dl-cdn.alpinelinux.org/alpine/v3.17/releases/aarch64/alpine-standard-3.17.1-aarch64.iso
-SSH = 2222
 
 include ../mk/arm64.mk

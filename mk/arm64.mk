@@ -11,10 +11,6 @@
 # Look up the TOPDIR using our location in the tree as a reference
 TOPDIR = $(realpath $(dir $(lastword $(MAKEFILE_LIST)))/..)
 
-# Default machine specifications (override this from local.mk)
-CPUS = 4
-RAMSIZE_MB = 8192
-
 # This assumes a Debian-derived host OS with qemu-efi-aarch64 installed.
 # It will not work out-of-the-box on other systems. If your distro
 # doesn't have this package, or equivalent, then it is possible to
@@ -24,18 +20,18 @@ FIRMWARE = file:///usr/share/AAVMF/AAVMF_CODE.fd
 
 QEMU = qemu-system-aarch64
 QEMU_FLAGS = $(MACHINE_FLAGS) $(BIOS_FLAGS) $(HDD_FLAGS) $(NETWORK_FLAGS) $(EXTRA_QEMU_FLAGS)
-MACHINE_FLAGS = -cpu cortex-a57 -M virt -smp $(CPUS) -m $(RAMSIZE_MB) -nographic
+MACHINE_FLAGS = -cpu cortex-a57 -M virt -smp $(VM_CPUS) -m $(VM_RAMSIZE_MB) -nographic
 BIOS_FLAGS = -drive if=pflash,file=qemu_efi.img \
 	     -drive if=pflash,file=varstore.img
 HDD_FLAGS = -drive if=virtio,file=$(HDD)
-NETWORK_FLAGS = -nic user,model=virtio,hostfwd=tcp::$(SSH)-:22
+NETWORK_FLAGS = -nic user,model=virtio,hostfwd=tcp::$(VM_SSH)-:22
 HEADLESS_FLAGS =
 
 # Try to use KVM acceleration if we are running on arm64 (and it's not a
 # Windows-on-Snapdragon laptop :-( )
 ifeq ($(shell uname -m),aarch64)
 ifeq ($(wildcard /dev/kvm),/dev/kvm)
-MACHINE_FLAGS = -cpu host -M virt -smp $(CPUS) -m $(RAMSIZE_MB) -enable-kvm -nographic
+MACHINE_FLAGS = -cpu host -M virt -smp $(VM_CPUS) -m $(VM_RAMSIZE_MB) -enable-kvm -nographic
 endif
 endif
 

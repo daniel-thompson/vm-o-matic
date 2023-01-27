@@ -13,7 +13,6 @@
 
 # Auto-discover the image
 HDD := $(shell ls core-image-*.rootfs.wic | tail -n1)
-SSH = 2222
 
 include ../mk/arm64.mk
 

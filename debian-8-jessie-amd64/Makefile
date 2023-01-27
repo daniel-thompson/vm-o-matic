@@ -21,6 +21,5 @@
 
 HDD = debian-8-jessie-x86_64.img
 ISO = https://cdimage.debian.org/cdimage/archive/8.11.1/amd64/iso-cd/debian-8.11.1-amd64-CD-1.iso
-SSH = 2222
 
 include ../mk/amd64.mk

@@ -21,6 +21,5 @@
 
 HDD = Rocky-8-x86_64.img
 ISO = https://download.rockylinux.org/pub/rocky/8/isos/x86_64/Rocky-8.5-x86_64-minimal.iso
-SSH = 2222
 
 include ../mk/amd64.mk

@@ -2,20 +2,38 @@
 # generic.mk
 #
 
+# Default settings.
+#
+# These can be overridden in multiple ways:
+#
+#   - on a per-arch basis simply by conditionally setting them,
+#   - locally by adding something to local.mk
+#   - from the environment or make command line
+#
+VM_CPUS ?= 4
+VM_RAMSIZE_MB ?= 8192
+VM_SSH ?= 2222
+
 boot headless install: $(HDD)
 	$(QEMU) $(QEMU_FLAGS)
+
+tpm2:
+	mkdir -p tpm2
+	(swtpm socket --tpmstate dir=tpm2 --ctrl type=unixio,path=tpm2/swtpm-sock --log level=20 --tpm2 & sleep 1; $(QEMU) $(QEMU_FLAGS) -chardev socket,id=chrtpm,path=tpm2/swtpm-sock   -tpmdev emulator,id=tpm0,chardev=chrtpm   -device tpm-tis,tpmdev=tpm0; wait)
 
 install: EXTRA_QEMU_FLAGS = -drive if=virtio,format=raw,file=$(notdir $(ISO))
 install : $(notdir $(ISO))
 
 clean :
-	$(RM) $(HDD) $(notdir $(ISO)) $(ARCH_CLEAN_FILES)
+	$(RM) -r $(HDD) $(notdir $(ISO)) tpm2/ $(ARCH_CLEAN_FILES)
 
 $(HDD):
 	qemu-img create -f qcow2 $(HDD) 128G
 
 $(notdir $(ISO)):
 	curl --fail --location --output $@ $(ISO)
+
+.PHONY: boot headless install clean pristine tpm2
 
 # Permit local overrides
 -include $(TOPDIR)/local.mk

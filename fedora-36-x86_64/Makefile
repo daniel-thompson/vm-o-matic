@@ -21,6 +21,5 @@
 
 HDD = fedora-36-x86_64.img
 ISO = https://download.fedoraproject.org/pub/fedora/linux/releases/36/Server/x86_64/iso/Fedora-Server-netinst-x86_64-36-1.5.iso
-SSH = 2222
 
 include ../mk/amd64.mk
