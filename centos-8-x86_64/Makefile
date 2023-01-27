@@ -23,24 +23,4 @@ HDD = CentOS-8-x86_64.img
 ISO = http://mirror.ox.ac.uk/sites/mirror.centos.org/8.3.2011/isos/x86_64/CentOS-8.3.2011-x86_64-dvd1.iso
 SSH = 2222
 
-CPUS = 4
-RAMSIZE_MB = 8192
-
-QEMU = qemu-system-x86_64 
-QEMU_FLAGS = $(MACHINE_FLAGS) $(HDD_FLAGS) $(NETWORK_FLAGS) $(EXTRA_QEMU_FLAGS)
-MACHINE_FLAGS = -enable-kvm -smp $(CPUS) -m $(RAMSIZE_MB) 
-HDD_FLAGS = -drive if=virtio,file=$(HDD)
-NETWORK_FLAGS = -nic user,model=virtio,hostfwd=tcp::$(SSH)-:22
-
-boot headless install: $(HDD)
-	$(QEMU) $(QEMU_FLAGS)
-
-headless: EXTRA_QEMU_FLAGS = -nographic
-install: EXTRA_QEMU_FLAGS = -cdrom $(notdir $(ISO))
-install : $(notdir $(ISO))
-
-$(HDD):
-	qemu-img create -f qcow2 $(HDD) 128G
-
-$(notdir $(ISO)):
-	wget $(ISO)
+include ../mk/amd64.mk
