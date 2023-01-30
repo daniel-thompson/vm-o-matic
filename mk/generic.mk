@@ -12,6 +12,7 @@
 #
 VM_CPUS ?= 4
 VM_RAMSIZE_MB ?= 8192
+VM_ROOTFS ?= $(error Cannot run custom kernel: Makefile did not set VM_ROOTFS)
 VM_SSH ?= 2222
 
 boot headless install: $(HDD)
