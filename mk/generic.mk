@@ -18,6 +18,8 @@ VM_SSH ?= 2222
 boot headless install: $(HDD)
 	$(QEMU) $(QEMU_FLAGS)
 
+headless : EXTRA_QEMU_FLAGS = $(HEADLESS_FLAGS)
+
 tpm2:
 	mkdir -p tpm2
 	(swtpm socket --tpmstate dir=tpm2 --ctrl type=unixio,path=tpm2/swtpm-sock --log level=20 --tpm2 & sleep 1; $(QEMU) $(QEMU_FLAGS) -chardev socket,id=chrtpm,path=tpm2/swtpm-sock   -tpmdev emulator,id=tpm0,chardev=chrtpm   -device tpm-tis,tpmdev=tpm0; wait)
