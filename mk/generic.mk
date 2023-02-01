@@ -15,6 +15,8 @@ VM_RAMSIZE_MB ?= 8192
 VM_ROOTFS ?= $(error Cannot run custom kernel: Makefile did not set VM_ROOTFS)
 VM_SSH ?= 2222
 
+CURL = curl --fail --location
+
 boot headless install: $(HDD)
 	$(QEMU) $(QEMU_FLAGS)
 
@@ -39,7 +41,7 @@ $(HDD):
 endif
 
 $(notdir $(ISO)):
-	curl --fail --location --output $@ $(ISO)
+	$(CURL) --output $@ $(ISO)
 
 .PHONY: boot headless install clean pristine tpm2
 
