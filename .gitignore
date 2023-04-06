@@ -8,6 +8,9 @@ debian-*-netinst.iso
 Fedora-*.iso
 Fedora-*.qcow2
 fedora-*.img
+latest-nixos-*.iso
+nixos-*.iso
+nixos-*.img
 qemu_efi.img
 Rocky-*.img
 Rocky-*.iso
