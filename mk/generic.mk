@@ -15,6 +15,11 @@ VM_RAMSIZE_MB ?= 8192
 VM_ROOTFS ?= $(error Cannot run custom kernel: Makefile did not set VM_ROOTFS)
 VM_SSH ?= 2222
 
+# If HDD is not set then derive it from MAKEFILE_LIST. Note that substituting
+# '/' for ' ' is safe even for paths containing a space (because there are
+# no such paths inside vm-o-matic
+HDD ?= $(lastword $(filter-out Makefile,$(subst /, ,$(realpath $(firstword $(MAKEFILE_LIST)))))).img
+
 CURL = curl --fail --location
 
 boot headless install: $(HDD)
