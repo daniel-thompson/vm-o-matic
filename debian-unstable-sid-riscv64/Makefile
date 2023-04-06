@@ -1,25 +1,4 @@
-#
-# This Makefile provides sane defaults for downloading a basic image
-# for qemu-system-riscv64.
-#
-# `make boot` will boot the system.
-#
-# Default credentials are:
-#   root/root
-#   debian/debian
-#
-# In *all* the above cases the system will be operating with a NAT-like
-# networking configuration where the `SSH=` port is forwarded on the
-# host machine will be forwarded to port 22 on the emulated device.
-# To connect using ssh try:
-#
-#     ssh -p 2222 localhost
-#
-# Thanks to https://colatkinson.site/linux/riscv/2021/01/27/riscv-qemu/
-# for sharing the recipe to get Debian booted on qemu-system-riscv64!
-#
-
-HDD = debian-unstable-sid-riscv64.img
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 DISABLE_HDD_RULE = y
 include ../mk/riscv64.mk

@@ -1,18 +1,7 @@
-#
-# This Makefile provides sane defaults for basic boot scenarios using
-# qemu-system-aarch64.
-#
-# `make boot` will boot the system.
-#
-# The system will be operating with a NAT-like networking configuration where
-# the `SSH=` port is forwarded on the host machine will be forwarded to port 22
-# on the emulated device.  To connect using ssh try:
-#
-#     ssh -p 2222 localhost
-#
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 # Auto-discover the image
-HDD := $(shell ls core-image-*.rootfs.wic | tail -n1)
+HDD := $(shell ls core-image-*.rootfs.wic 2> /dev/null | tail -n1)
 
 include ../mk/arm64.mk
 
