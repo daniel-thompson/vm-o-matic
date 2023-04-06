@@ -10,6 +10,7 @@ Example
 
 ```sh
 cd debian-11-bullseye-amd64
+make help
 make install
-make boot
+make
 ```

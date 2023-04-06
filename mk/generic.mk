@@ -25,16 +25,18 @@ CURL = curl --fail --location
 boot headless install: $(HDD)
 	$(QEMU) $(QEMU_FLAGS)
 
-headless : EXTRA_QEMU_FLAGS = $(HEADLESS_FLAGS)
+boot : ## Launch a VM
 
-tpm2:
+headless : EXTRA_QEMU_FLAGS = $(HEADLESS_FLAGS) ## Launch a VM using a serial console
+
+tpm2: ## Launch a VM and TPM2 simulator
 	mkdir -p tpm2
 	(swtpm socket --tpmstate dir=tpm2 --ctrl type=unixio,path=tpm2/swtpm-sock --log level=20 --tpm2 & sleep 1; $(QEMU) $(QEMU_FLAGS) -chardev socket,id=chrtpm,path=tpm2/swtpm-sock   -tpmdev emulator,id=tpm0,chardev=chrtpm   -device tpm-tis,tpmdev=tpm0; wait)
 
 install: EXTRA_QEMU_FLAGS = -drive if=virtio,format=raw,file=$(notdir $(ISO))
-install : $(notdir $(ISO))
+install : $(notdir $(ISO)) ## Download ISO image and boot VM using it
 
-clean :
+clean : ## Tidy up HDD and ISO images
 	$(RM) -r $(HDD) $(notdir $(ISO)) tpm2/ $(ARCH_CLEAN_FILES)
 
 # Can be hooked from Makefiles that have custom downloads
@@ -48,7 +50,10 @@ endif
 $(notdir $(ISO)):
 	$(CURL) --output $@ $(ISO)
 
-.PHONY: boot headless install clean pristine tpm2
+help :
+	@eval $$(sed -E -n 's/^([a-zA-Z0-9_-]+) *:.*?## (.*)$$/printf " %-20s %s\\n" " \1" "\2" ;/; ta; b; :a p' $(MAKEFILE_LIST) | sort)
+
+.PHONY: boot headless help install clean pristine tpm2
 
 # Permit local overrides
 -include $(TOPDIR)/local.mk
