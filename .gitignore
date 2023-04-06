@@ -6,9 +6,10 @@ core-image-*.iso
 debian-*.img
 debian-*-netinst.iso
 Fedora-*.iso
+Fedora-*.qcow2
 fedora-*.img
 qemu_efi.img
 Rocky-*.img
 Rocky-*.iso
-tpm2
+tpm2/
 varstore.img
