@@ -9,6 +9,9 @@ Fedora-*.iso
 Fedora-*.qcow2
 fedora-*.img
 latest-nixos-*.iso
+linaro-sid-gnome-qrb5165-rb5/Image
+linaro-sid-gnome-qrb5165-rb5.img
+linaro-sid-gnome-qrb5165-rb5-*
 nixos-*.iso
 nixos-*.img
 qemu_efi.img
