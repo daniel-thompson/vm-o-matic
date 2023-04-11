@@ -9,8 +9,7 @@ VM_ROOTFS = /dev/vda
 
 # Set core count and RAM size to match the RB5
 VM_CPUS ?= 8
-#VM_RAMSIZE_MB ?= 16384
-VM_RAMSIZE_MB = 8192
+VM_RAMSIZE_MB ?= 16384
 
 DISABLE_HDD_RULE = y
 include ../mk/arm64.mk
@@ -18,12 +17,19 @@ include ../mk/arm64.mk
 # HDD download and prep
 $(notdir $(URL)) :
 	$(CURL) --output $@ $(URL)
-$(notdir $(URL:%.img.gz=%.sparse)) : $(notdir $(URL))
-	gunzip -c $< > $@
-$(notdir $(URL:%.img.gz=%.raw)) : $(notdir $(URL:%.img.gz=%.sparse))
-	simg2img $< $@
+$(notdir $(URL:%.img.gz=%.raw)) : $(notdir $(URL))
+	gunzip -c $< > $(notdir $(URL:%.img.gz=%.sparse))
+	simg2img $(notdir $(URL:%.img.gz=%.sparse)) $@
+	$(RM) $(notdir $(URL:%.img.gz=%.sparse))
 $(HDD) : $(notdir $(URL:%.img.gz=%.raw))
 	qemu-img create -o backing_file=$<,backing_fmt=raw -f qcow2 $@ 128G
+
+clean : rb5_clean
+rb5_clean :
+	$(RM) $(notdir $(URL:%.img.gz=%.raw))
+pristine : rb5_pristine
+rb5_pristine :
+	$(RM) $(notdir $(URL))
 
 # User friendly error reporting
 ifeq ($(wildcard $(KERNEL)),)
