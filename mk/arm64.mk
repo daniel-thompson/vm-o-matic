@@ -43,6 +43,11 @@ ifdef KERNEL
 KERNEL_FLAGS = -kernel $(KERNEL) -append root="$(VM_ROOTFS) $(VM_CMDLINE)"
 endif
 
+ifdef DTB
+KERNEL_FLAGS += -dtb $(DTB)
+BIOS_FLAGS =
+endif
+
 # arm64 requires additional firmware files to be created
 boot headless install: qemu_efi.img varstore.img
 
