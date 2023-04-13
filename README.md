@@ -18,7 +18,7 @@ make
 Kernel hacking
 --------------
 
-An defconfig kernel usually has enough compiled built in to do a minimal
+A defconfig kernel usually has enough compiled built in to do a minimal
 boot (an arm64 one certainly does). For some recipes we can bypass
 grub and load a kernel directly.
 
