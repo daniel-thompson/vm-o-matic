@@ -22,7 +22,7 @@ HDD ?= $(lastword $(filter-out Makefile,$(subst /, ,$(realpath $(firstword $(MAK
 
 CURL = curl --fail --location
 
-boot headless install: $(HDD)
+boot headless install vnc: $(HDD)
 	$(QEMU) $(QEMU_FLAGS)
 
 boot : ## Launch a VM
@@ -35,6 +35,11 @@ tpm2: ## Launch a VM and TPM2 simulator
 
 install: EXTRA_QEMU_FLAGS = -drive if=virtio,format=raw,file=$(notdir $(ISO))
 install : $(notdir $(ISO)) ## Download ISO image and boot VM using it
+
+# This has crap-all security at all (unless the host firewall blocks port
+# 5901 when it will be elevated merely has crap security). Connect using:
+# vnc://<hostname>:5901
+vnc : EXTRA_QEMU_FLAGS = -vnc :1,power-control=on,$(EXTRA_VNC_FLAGS)
 
 clean : ## Tidy up HDD and ISO images
 	$(RM) -r $(HDD) $(notdir $(ISO)) tpm2/ $(ARCH_CLEAN_FILES)
