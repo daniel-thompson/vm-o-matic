@@ -18,4 +18,6 @@ qemu_efi.img
 Rocky-*.img
 Rocky-*.iso
 tpm2/
+ubuntu-*.img
+ubuntu-*.iso
 varstore.img
