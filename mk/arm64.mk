@@ -38,12 +38,10 @@ MACHINE_FLAGS = -cpu host -M virt -smp $(VM_CPUS) -m $(VM_RAMSIZE_MB) -enable-kv
 endif
 endif
 
-ifdef KERNEL
-KERNEL_FLAGS = -kernel $(KERNEL) -append root="$(VM_ROOTFS) $(VM_CMDLINE)"
-endif
-
 ifdef DTB
 KERNEL_FLAGS += -dtb $(DTB)
+# To boot with a dtb we must clear the BIOS flags (because the EFI implementation
+# won't propagate the dtb to the kernel)
 BIOS_FLAGS =
 endif
 

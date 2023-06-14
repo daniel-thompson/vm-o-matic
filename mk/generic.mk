@@ -25,6 +25,10 @@ CURL = curl --fail --location
 QEMU ?= $(error QEMU is not set)
 QEMU_FLAGS = $(KVM_FLAGS) $(MACHINE_FLAGS) $(BIOS_FLAGS) $(HDD_FLAGS) $(NETWORK_FLAGS) $(MISC_FLAGS) $(KERNEL_FLAGS) $(BOOT_MODE_FLAGS) $(EXTRA_QEMU_FLAGS)
 
+ifdef KERNEL
+KERNEL_FLAGS = -kernel $(KERNEL) -append root="$(VM_ROOTFS) $(VM_CMDLINE)"
+endif
+
 boot headless install vnc: $(HDD)
 	$(QEMU) $(QEMU_FLAGS)
 
