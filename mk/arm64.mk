@@ -22,7 +22,6 @@ VM_MACHINE ?= virt
 FIRMWARE = file:///usr/share/AAVMF/AAVMF_CODE.fd
 
 QEMU = qemu-system-aarch64
-QEMU_FLAGS = $(MACHINE_FLAGS) $(BIOS_FLAGS) $(HDD_FLAGS) $(NETWORK_FLAGS) $(MISC_FLAGS) $(KERNEL_FLAGS) $(EXTRA_QEMU_FLAGS)
 MACHINE_FLAGS = -cpu $(VM_CPU) -M $(VM_MACHINE) -smp $(VM_CPUS) -m $(VM_RAMSIZE_MB) -nographic
 BIOS_FLAGS = -drive if=pflash,file=qemu_efi.img \
 	     -drive if=pflash,file=varstore.img

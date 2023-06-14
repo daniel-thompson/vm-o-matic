@@ -13,7 +13,6 @@ TOPDIR = $(realpath $(dir $(lastword $(MAKEFILE_LIST)))/..)
 FIRMWARE = file:///usr/share/AAVMF/AAVMF_CODE.fd
 
 QEMU = qemu-system-riscv64
-QEMU_FLAGS = $(MACHINE_FLAGS) $(BIOS_FLAGS) $(HDD_FLAGS) $(NETWORK_FLAGS) $(EXTRA_QEMU_FLAGS)
 MACHINE_FLAGS = -cpu rv64 -M virt -smp $(VM_CPUS) -m $(VM_RAMSIZE_MB) -nographic
 BIOS_FLAGS = -bios /usr/lib/riscv64-linux-gnu/opensbi/generic/fw_jump.elf \
 	     -kernel /usr/lib/u-boot/qemu-riscv64_smode/uboot.elf

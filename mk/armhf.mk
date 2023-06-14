@@ -4,8 +4,9 @@
 # WARNING: EDK2 does something funny with the varstore on the first
 #          boot. It the CD is not present at first boot the varstore
 #          will be updated and *subsequent* boots will fail to find
-#          the CD drive (e.g. `make install` will fall back to
-#          work boot). To fix just delete varstore.img and try again.
+#          the CD drive (e.g. `make install` will end up working just
+#          like `make boot`. To fix just delete varstore.img and try
+#          again.
 #
 
 # Look up the TOPDIR using our location in the tree as a reference
@@ -24,7 +25,6 @@ VM_RAMSIZE_MB ?= 2048
 FIRMWARE = file:///usr/share/AAVMF/AAVMF32_CODE.fd
 
 QEMU = qemu-system-arm
-QEMU_FLAGS = $(MACHINE_FLAGS) $(BIOS_FLAGS) $(HDD_FLAGS) $(NETWORK_FLAGS) $(EXTRA_QEMU_FLAGS)
 MACHINE_FLAGS = -cpu cortex-a15 -M virt -smp $(VM_CPUS) -m $(VM_RAMSIZE_MB) -nographic
 BIOS_FLAGS = -drive if=pflash,file=qemu_efi.img \
 	     -drive if=pflash,file=varstore.img

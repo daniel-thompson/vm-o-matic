@@ -10,7 +10,6 @@ TOPDIR = $(realpath $(dir $(lastword $(MAKEFILE_LIST)))/..)
 FIRMWARE = /usr/share/OVMF/OVMF_CODE.fd
 
 QEMU = qemu-system-x86_64
-QEMU_FLAGS = $(KVM_FLAGS) $(MACHINE_FLAGS) $(BIOS_FLAGS) $(HDD_FLAGS) $(NETWORK_FLAGS) $(EXTRA_QEMU_FLAGS)
 MACHINE_FLAGS = -smp $(VM_CPUS) -m $(VM_RAMSIZE_MB)
 BIOS_FLAGS = -bios $(FIRMWARE)
 HDD_FLAGS = -drive if=virtio,file=$(HDD)

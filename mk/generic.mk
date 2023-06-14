@@ -22,24 +22,27 @@ HDD ?= $(lastword $(filter-out Makefile,$(subst /, ,$(realpath $(firstword $(MAK
 
 CURL = curl --fail --location
 
+QEMU ?= $(error QEMU is not set)
+QEMU_FLAGS = $(KVM_FLAGS) $(MACHINE_FLAGS) $(BIOS_FLAGS) $(HDD_FLAGS) $(NETWORK_FLAGS) $(MISC_FLAGS) $(KERNEL_FLAGS) $(BOOT_MODE_FLAGS) $(EXTRA_QEMU_FLAGS)
+
 boot headless install vnc: $(HDD)
 	$(QEMU) $(QEMU_FLAGS)
 
 boot : ## Launch a VM
 
-headless : EXTRA_QEMU_FLAGS = $(HEADLESS_FLAGS) ## Launch a VM using a serial console
+headless : BOOT_MODE_FLAGS = $(HEADLESS_FLAGS) ## Launch a VM using a serial console
 
 tpm2: ## Launch a VM and TPM2 simulator
 	mkdir -p tpm2
 	(swtpm socket --tpmstate dir=tpm2 --ctrl type=unixio,path=tpm2/swtpm-sock --log level=20 --tpm2 & sleep 1; $(QEMU) $(QEMU_FLAGS) -chardev socket,id=chrtpm,path=tpm2/swtpm-sock   -tpmdev emulator,id=tpm0,chardev=chrtpm   -device tpm-tis,tpmdev=tpm0; wait)
 
-install: EXTRA_QEMU_FLAGS = -drive if=virtio,format=raw,file=$(notdir $(ISO))
+install: BOOT_MODE_FLAGS = -drive if=virtio,format=raw,file=$(notdir $(ISO))
 install : $(notdir $(ISO)) ## Download ISO image and boot VM using it
 
 # This has crap-all security at all (unless the host firewall blocks port
 # 5901 when it will be elevated merely has crap security). Connect using:
 # vnc://<hostname>:5901
-vnc : EXTRA_QEMU_FLAGS = -vnc :1,power-control=on,$(EXTRA_VNC_FLAGS)
+vnc : BOOT_MODE_FLAGS = -vnc :1,power-control=on,$(EXTRA_VNC_FLAGS)
 
 clean : ## Tidy up HDD and ISO images
 	$(RM) -r $(HDD) $(notdir $(ISO)) tpm2/ $(ARCH_CLEAN_FILES)
