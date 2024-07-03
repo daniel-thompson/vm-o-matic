@@ -29,6 +29,13 @@ ifdef KERNEL
 KERNEL_FLAGS = -kernel $(KERNEL) -append root="$(VM_ROOTFS) $(VM_CMDLINE)"
 endif
 
+ifdef BRIDGE
+# This won't work on PCIe-less virtual systems... but we need to override
+# everything because we want to set an explicit MAC address
+MACADDR = $(shell echo "52:54:00:$$(echo $(HOSTNAME) $(BRIDGE) $(PWD) | sha256sum | sed -E 's/^(..)(..)(..).*$$/\1:\2:\3/')")
+NETWORK_FLAGS = -device virtio-net-pci,netdev=eth0,mac=$(MACADDR) -netdev bridge,id=eth0,br=$(BRIDGE)
+endif
+
 boot headless install vnc: $(HDD)
 	$(QEMU) $(QEMU_FLAGS)
 
