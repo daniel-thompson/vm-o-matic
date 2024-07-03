@@ -2,6 +2,8 @@
 .*.swo
 AAVMF_CODE.fd
 AAVMF32_CODE.fd
+alpine-*.img
+alpine-*.iso
 core-image-*.iso
 debian-*.img
 debian-*-netinst.iso
