@@ -59,8 +59,10 @@ $(HDD):
 	qemu-img create -f qcow2 $(HDD) 128G
 endif
 
+ifndef DISABLE_ISO_RULE
 $(notdir $(ISO)):
 	$(CURL) --output $@ $(ISO)
+endif
 
 help :
 	@eval $$(sed -E -n 's/^([a-zA-Z0-9_-]+) *:.*?## (.*)$$/printf " %-20s %s\\n" " \1" "\2" ;/; ta; b; :a p' $(MAKEFILE_LIST) | sort)

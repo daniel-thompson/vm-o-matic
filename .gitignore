@@ -23,3 +23,6 @@ tpm2/
 ubuntu-*.img
 ubuntu-*.iso
 varstore.img
+arm-systemready-ir-acs/arm-systemready-ir-acs.img
+arm-systemready-ir-acs/ir-acs-live-image-generic-arm64.wic
+arm-systemready-ir-acs/mini.iso
