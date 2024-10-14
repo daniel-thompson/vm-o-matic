@@ -29,6 +29,7 @@ CURL = curl --fail --location
 
 QEMU ?= $(error QEMU is not set)
 QEMU_FLAGS = $(KVM_FLAGS) $(MACHINE_FLAGS) $(BIOS_FLAGS) $(HDD_FLAGS) $(NETWORK_FLAGS) $(MISC_FLAGS) $(KERNEL_FLAGS) $(BOOT_MODE_FLAGS) $(EXTRA_QEMU_FLAGS)
+CDROM_FLAGS ?= -drive if=virtio,format=raw,file=$(notdir $(ISO))
 HDD_FLAGS ?= -drive if=virtio,file=$(HDD)
 NETWORK_FLAGS ?= -nic user,model=virtio,hostfwd=tcp::$(VM_SSH)-:22
 
@@ -54,7 +55,7 @@ tpm2: ## Launch a VM and TPM2 simulator
 	mkdir -p tpm2
 	(swtpm socket --tpmstate dir=tpm2 --ctrl type=unixio,path=tpm2/swtpm-sock --log level=20 --tpm2 & sleep 1; $(QEMU) $(QEMU_FLAGS) -chardev socket,id=chrtpm,path=tpm2/swtpm-sock   -tpmdev emulator,id=tpm0,chardev=chrtpm   -device tpm-tis,tpmdev=tpm0; wait)
 
-install: BOOT_MODE_FLAGS = -drive if=virtio,format=raw,file=$(notdir $(ISO))
+install: BOOT_MODE_FLAGS = $(CDROM_FLAGS)
 install : $(notdir $(ISO)) ## Download ISO image and boot VM using it
 
 # This has crap-all security at all (unless the host firewall blocks port
