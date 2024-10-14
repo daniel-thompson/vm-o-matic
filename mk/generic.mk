@@ -10,6 +10,11 @@
 #   - locally by adding something to local.mk
 #   - from the environment or make command line
 #
+ifeq ($(VM_SIZE),big)
+# Get total number of cores, ignoring hyperthreaded partners
+VM_CPUS ?= $(shell lscpu --parse=core | grep -v '^#' | sort -u | wc -l)
+VM_RAMSIZE_MB ?= $(shell awk '/^MemTotal:/ { print int($$2 / 1024) - 3072 }' /proc/meminfo)
+endif
 VM_CPUS ?= 4
 VM_RAMSIZE_MB ?= 8192
 VM_ROOTFS ?= $(error Cannot run custom kernel: Makefile did not set VM_ROOTFS)
