@@ -12,8 +12,6 @@ FIRMWARE = /usr/share/OVMF/OVMF_CODE.fd
 QEMU = qemu-system-x86_64
 MACHINE_FLAGS = -smp $(VM_CPUS) -m $(VM_RAMSIZE_MB)
 BIOS_FLAGS = -bios $(FIRMWARE)
-HDD_FLAGS = -drive if=virtio,file=$(HDD)
-NETWORK_FLAGS = -nic user,model=virtio,hostfwd=tcp::$(VM_SSH)-:22
 HEADLESS_FLAGS = -nographic
 
 # Use KVM acceleration if we are running on x86_64

@@ -25,8 +25,6 @@ QEMU = qemu-system-aarch64
 MACHINE_FLAGS = -cpu $(VM_CPU) -M $(VM_MACHINE) -smp $(VM_CPUS) -m $(VM_RAMSIZE_MB) -nographic
 BIOS_FLAGS = -drive if=pflash,file=qemu_efi.img \
 	     -drive if=pflash,file=varstore.img
-HDD_FLAGS = -drive if=virtio,file=$(HDD)
-NETWORK_FLAGS = -nic user,model=virtio,hostfwd=tcp::$(VM_SSH)-:22
 MISC_FLAGS = -device virtio-rng-pci
 HEADLESS_FLAGS =
 

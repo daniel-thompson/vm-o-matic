@@ -29,6 +29,8 @@ CURL = curl --fail --location
 
 QEMU ?= $(error QEMU is not set)
 QEMU_FLAGS = $(KVM_FLAGS) $(MACHINE_FLAGS) $(BIOS_FLAGS) $(HDD_FLAGS) $(NETWORK_FLAGS) $(MISC_FLAGS) $(KERNEL_FLAGS) $(BOOT_MODE_FLAGS) $(EXTRA_QEMU_FLAGS)
+HDD_FLAGS ?= -drive if=virtio,file=$(HDD)
+NETWORK_FLAGS ?= -nic user,model=virtio,hostfwd=tcp::$(VM_SSH)-:22
 
 ifdef KERNEL
 KERNEL_FLAGS = -kernel $(KERNEL) -append root="$(VM_ROOTFS) $(VM_CMDLINE)"

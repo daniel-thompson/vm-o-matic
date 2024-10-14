@@ -28,8 +28,6 @@ QEMU = qemu-system-arm
 MACHINE_FLAGS = -cpu cortex-a15 -M virt -smp $(VM_CPUS) -m $(VM_RAMSIZE_MB) -nographic
 BIOS_FLAGS = -drive if=pflash,file=qemu_efi.img \
 	     -drive if=pflash,file=varstore.img
-HDD_FLAGS = -drive if=virtio,file=$(HDD)
-NETWORK_FLAGS = -nic user,model=virtio,hostfwd=tcp::$(VM_SSH)-:22
 HEADLESS_FLAGS =
 
 # Try to use KVM acceleration if we are running on arm64 (and it's not a
