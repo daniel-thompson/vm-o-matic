@@ -44,7 +44,25 @@ MACADDR = $(shell echo "52:54:00:$$(echo $(HOSTNAME) $(BRIDGE) $(PWD) | sha256su
 NETWORK_FLAGS = -device virtio-net-pci,netdev=eth0,mac=$(MACADDR) -netdev bridge,id=eth0,br=$(BRIDGE)
 endif
 
+# Disabling HDD checks allows a Makefile to point to a real device.
+# There are unlikely to be examples of this in the upstream code
+# but this can be useful if reusing vm-o-matic to boot USB or
+# microSD card media.
+#
+# Try something like:
+#
+# ~~~make
+# HDD = "/dev/disk/by-id/usb-Generic_Kingston_DataTraveler_G2_001D24F421A21896B456EE05-0:0"
+#
+# DISABLE_HDD_CHECKS = y
+# DISABLE_HDD_RULE = y
+#
+# include ../mk/amd64.mk
+# ~~~
+ifndef DISABLE_HDD_CHECKS
 boot headless install vnc: $(HDD)
+endif
+boot headless install vnc:
 	$(QEMU) $(QEMU_FLAGS)
 
 boot : ## Launch a VM
