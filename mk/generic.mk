@@ -28,13 +28,17 @@ HDD ?= $(lastword $(filter-out Makefile,$(subst /, ,$(realpath $(firstword $(MAK
 CURL = curl --fail --location
 
 QEMU ?= $(error QEMU is not set)
-QEMU_FLAGS = $(KVM_FLAGS) $(MACHINE_FLAGS) $(BIOS_FLAGS) $(HDD_FLAGS) $(NETWORK_FLAGS) $(MISC_FLAGS) $(KERNEL_FLAGS) $(BOOT_MODE_FLAGS) $(EXTRA_QEMU_FLAGS)
+QEMU_FLAGS = $(KVM_FLAGS) $(MACHINE_FLAGS) $(BIOS_FLAGS) $(HDD_FLAGS) $(NETWORK_FLAGS) $(MISC_FLAGS) $(KERNEL_FLAGS) $(BOOT_MODE_FLAGS) $(VIRTFS_FLAGS) $(EXTRA_QEMU_FLAGS)
 CDROM_FLAGS ?= -drive if=virtio,format=raw,file=$(notdir $(ISO))
 HDD_FLAGS ?= -drive if=virtio,file=$(HDD)
 NETWORK_FLAGS ?= -nic user,model=virtio,hostfwd=tcp::$(VM_SSH)-:22
 
 ifdef KERNEL
 KERNEL_FLAGS = -kernel $(KERNEL) -append root="$(VM_ROOTFS) $(VM_CMDLINE)"
+endif
+
+ifdef VIRTFS_PATH
+VIRTFS_FLAGS = -virtfs local,path=$(VIRTFS_PATH),mount_tag=hostfs,security_model=mapped-xattr
 endif
 
 ifdef BRIDGE
