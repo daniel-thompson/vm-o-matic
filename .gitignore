@@ -2,9 +2,12 @@
 .*.swo
 AAVMF_CODE.fd
 AAVMF32_CODE.fd
+OVMF_CODE_4M.fd
 alpine-*.img
 alpine-*.iso
 core-image-*.iso
+centos-*.img
+CentOS-*.iso
 debian-*.img
 debian-*-netinst.iso
 Fedora-*.iso
