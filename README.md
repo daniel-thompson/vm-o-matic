@@ -28,6 +28,17 @@ Try something like:
 make VM_CPUS=16 VM_RAMSIZE_MB=16384 headless
 ```
 
+A (non-exhaustive) collection of useful variables is:
+
+* `VM_CPUS`: number of SMP cores (default: `4`)
+* `VM_RAMSIZE_MB`: quantity of RAM in MiB (default: `8192`)
+* `VM_SIZE`: if set to `big` or `small`, change defaults for `VM_CPUS` and
+  `VM_RAMSIZE_MB` accordingly
+* `VM_SSH`: set the host port that the VMs SSH port will be forwarded from
+  (default: `2222`)
+* `VM_HOST_ADDRESS`: if set, constrain the host address of the forwarded
+  SSH port (set this to `127.0.0.1` to prevent networked access to the port)
+
 Bridged networking
 ------------------
 

@@ -15,6 +15,10 @@ ifeq ($(VM_SIZE),big)
 VM_CPUS ?= $(shell lscpu --parse=core | grep -v '^#' | sort -u | wc -l)
 VM_RAMSIZE_MB ?= $(shell awk '/^MemTotal:/ { print int($$2 / 1024) - 3072 }' /proc/meminfo)
 endif
+ifeq ($(VM_SIZE),small)
+VM_CPUS ?= 2
+VM_RAMSIZE_MB ?= 1024
+endif
 VM_CPUS ?= 4
 VM_RAMSIZE_MB ?= 8192
 VM_ROOTFS ?= $(error Cannot run custom kernel: Makefile did not set VM_ROOTFS)
@@ -31,10 +35,10 @@ QEMU ?= $(error QEMU is not set)
 QEMU_FLAGS = $(KVM_FLAGS) $(MACHINE_FLAGS) $(BIOS_FLAGS) $(HDD_FLAGS) $(NETWORK_FLAGS) $(MISC_FLAGS) $(KERNEL_FLAGS) $(BOOT_MODE_FLAGS) $(VIRTFS_FLAGS) $(EXTRA_QEMU_FLAGS)
 CDROM_FLAGS ?= -drive if=virtio,format=raw,file=$(notdir $(ISO))
 HDD_FLAGS ?= -drive if=virtio,file=$(HDD)
-NETWORK_FLAGS ?= -nic user,model=virtio,hostfwd=tcp::$(VM_SSH)-:22
+NETWORK_FLAGS ?= -nic user,model=virtio,hostfwd=tcp:$(VM_HOST_ADDRESS):$(VM_SSH)-$(VM_GUEST_ADDRESS):22
 
 ifdef KERNEL
-KERNEL_FLAGS = -kernel $(KERNEL) -append root="$(VM_ROOTFS) $(VM_CMDLINE)"
+KERNEL_FLAGS = -kernel $(KERNEL) -append "root=$(VM_ROOTFS) $(VM_CMDLINE)"
 endif
 
 ifdef VIRTFS_PATH
