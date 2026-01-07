@@ -64,9 +64,9 @@ endif
 # include ../mk/amd64.mk
 # ~~~
 ifndef DISABLE_HDD_CHECKS
-boot headless install vnc: $(HDD)
+boot headless install headless-install vnc: $(HDD)
 endif
-boot headless install vnc:
+boot headless install headless-install vnc:
 	$(QEMU) $(QEMU_FLAGS)
 
 boot : ## Launch a VM
@@ -79,6 +79,9 @@ tpm2: ## Launch a VM and TPM2 simulator
 
 install: BOOT_MODE_FLAGS = $(CDROM_FLAGS)
 install : $(notdir $(ISO)) ## Download ISO image and boot VM using it
+
+headless-install : BOOT_MODE_FLAGS = $(HEADLESS_FLAGS) $(CDROM_FLAGS)
+headless-install : $(notdir $(ISO)) ## Download ISO image and boot VM using it (headless)
 
 # This has crap-all security at all (unless the host firewall blocks port
 # 5901 when it will be elevated merely has crap security). Connect using:
@@ -104,7 +107,7 @@ endif
 help :
 	@eval $$(sed -E -n 's/^([a-zA-Z0-9_-]+) *:.*?## (.*)$$/printf " %-20s %s\\n" " \1" "\2" ;/; ta; b; :a p' $(MAKEFILE_LIST) | sort)
 
-.PHONY: boot headless help install clean pristine tpm2
+.PHONY: boot clean headless headless-install help install pristine tpm2
 
 # Permit local overrides
 -include $(TOPDIR)/local.mk

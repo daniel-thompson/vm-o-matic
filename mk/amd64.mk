@@ -24,7 +24,7 @@ ifeq ($(shell uname -m),x86_64)
 MACHINE_FLAGS += -enable-kvm
 endif
 
-boot headless install: qemu_efi.img varstore.img
+boot headless install headless-install : qemu_efi.img varstore.img
 
 qemu_efi.img : $(notdir $(FIRMWARE))
 	qemu-img convert -c -f raw -O qcow2 $^ $@
